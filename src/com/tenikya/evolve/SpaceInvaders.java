@@ -12,13 +12,12 @@ public class SpaceInvaders extends Applet implements Runnable {
     Image image;
 
     boolean gameInProgress = true;
-    boolean IntroScreen = true;
+    boolean goSlow = false;
 
     TurretController tc;
     AlienController ac;
     GameContext gc = GameContext.getInstance();
 
-    int score = 0;
     Font scoreFont = new Font("Helvetica", Font.BOLD, 14);
 
     public void init() {
@@ -68,26 +67,8 @@ public class SpaceInvaders extends Applet implements Runnable {
         }
     }
 
-    public boolean mouseMove(Event e, int x, int y) {
-        if (gameInProgress) {
-            tc.moveTurret(x);
-        }
-        return true;
-    }
-
-    public boolean mouseDrag(Event e, int x, int y) {
-        if (gameInProgress) {
-            tc.moveTurret(x);
-        }
-
-        return true;
-    }
-
     public boolean mouseDown(Event e, int x, int y) {
-        if (e.shiftDown()) {
-        } else if (gameInProgress) {
-            tc.fireMissile(x);
-        }
+        goSlow = !goSlow;
         return true;
     }
 
@@ -102,10 +83,6 @@ public class SpaceInvaders extends Applet implements Runnable {
         if (this_thread != null && this_thread.isAlive()) {
         }
     }
-
-    public void dialogDone() {
-    }
-
 
     public void update(Graphics g) {
         paint(g);
@@ -133,6 +110,13 @@ public class SpaceInvaders extends Applet implements Runnable {
             if (gameInProgress) {
                 tc.update();
                 ac.update();
+                try {
+                    if (goSlow) {
+                        Thread.sleep(200);
+                    }
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             Thread.currentThread().yield();
@@ -140,29 +124,9 @@ public class SpaceInvaders extends Applet implements Runnable {
     }
 
 
-    public void aliensDead() {
-        if (gameInProgress) {
-            IntroScreen = false;
-        }
-        gameInProgress = false;
-    }
-
-    public void turretDead() {
-        if (gameInProgress) {
-            IntroScreen = false;
-        }
-        gameInProgress = false;
-    }
-
-    public void addScore(int x) {
-        score += x;
-    }
-
     public void newGame() {
-        score = 0;
         tc.newGame();
         ac.newGame();
     }
 
-    public static int gameSpeed = 1;
 }

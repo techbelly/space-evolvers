@@ -16,10 +16,6 @@ class RectSprite {
     protected int width, height;
 
 
-    public boolean isVisible() {
-        return visible;
-    }
-
     public void setVisible(boolean b) {
         visible = b;
     }
@@ -42,35 +38,13 @@ class RectSprite {
         setActive(true);
     }
 
-    public boolean getFill() {
-        return fill;
-    }
-
     public void setFill(boolean b) {
         fill = b;
-    }
-
-    public Color getColour() {
-        return colour;
-    }
-
-    public void setColour(Color c) {
-        colour = c;
     }
 
     public RectSprite(int w, int h, Color c) {
         locx = 0;
         locy = 0;
-        width = w;
-        height = h;
-        colour = c;
-        fill = false;
-        restore();
-    }
-
-    public RectSprite(int x, int y, int w, int h, Color c) {
-        locx = x;
-        locy = y;
         width = w;
         height = h;
         colour = c;

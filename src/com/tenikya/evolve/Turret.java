@@ -1,17 +1,12 @@
 package com.tenikya.evolve;
 
 import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.*;
 
 
 class Turret extends GameSprite implements Moveable, Intersect {
 
-    static final int NUM_LIVES = 1000;
-
-    AudioClip hitsound;
     TurretController controller;
-    protected int lives = NUM_LIVES;
     boolean explode;
     int explodecount, count;
     SpaceInvaders parent;
@@ -44,26 +39,15 @@ class Turret extends GameSprite implements Moveable, Intersect {
     }
 
     public void hit(int ID) {
-        //hitsound.play();
-        if (lives == 0) {
-            controller.gunDead();
-        } else {
-            //	lives--;
             explode = true;
             parent.ac.turretHit(ID);
-        }
     }
 
     public int getX() {
         return locx;
     }
 
-    public int getLives() {
-        return lives;
-    }
-
     public void newGame() {
-        lives = NUM_LIVES;
         explode = false;
     }
 

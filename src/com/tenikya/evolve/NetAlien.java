@@ -17,11 +17,11 @@ class NetAlien extends GameSprite implements Intersect, Moveable {
     public boolean shoot = false;
     int yippee = 0;
     //weights
-    static public double lowestyw = 15.0;
-    static public double agew = 20.0;
-    static public double shotsw = -400;
-    static public double yippeew = 6000;
-    static public int maxAge = 1200;
+    static public double lowestyw = 0;
+    static public double agew = 2;
+    static public double shotsw = -2;
+    static public double yippeew = 3;
+    static public int maxAge = 50000;
 
     public NetAlien(Image i, Image e, int x, int y, int vx, int vy, Applet a, AlienController b) {
         super(x, y, i, a);
@@ -29,8 +29,8 @@ class NetAlien extends GameSprite implements Intersect, Moveable {
         this.vy = vy;
         aliencontrol = b;
         explodeImage = e;
-        this.spaceheight = b.height;
-        this.spacewidth = b.width;
+        this.spaceheight = AlienController.height;
+        this.spacewidth = AlienController.width;
         hit = false;
         hitcount = 0;
         count = 5;
@@ -43,17 +43,9 @@ class NetAlien extends GameSprite implements Intersect, Moveable {
         locy = y;
     }
 
-    public int getX() {
-        return locx;
-    }
-
-    public int getY() {
-        return locy;
-    }
-
     public void setVelocity(int x, int y) {
-        vx = vx;
-        vy = vy;
+        vx = x;
+        vy = y;
     }
 
 
@@ -106,6 +98,7 @@ class NetAlien extends GameSprite implements Intersect, Moveable {
         }
         int xAcceleration = 0;
         int yAcceleration = 0;
+
         double wTX = (double) aliencontrol.getTurretX() / (double) spacewidth - 0.5;
         double wMX = (double) locx / (double) spacewidth - 0.5;
         double wYX = (double) locy / (double) spaceheight - 0.5;
@@ -158,17 +151,16 @@ class NetAlien extends GameSprite implements Intersect, Moveable {
         yippee++;
     }
 
-    public int FIREPOWER = 35;
     public boolean Gravity = true;
     public int GRAVITY_CONSTANT = 3;
-    public int LEFTPOWER = 32;
+    public int LEFTPOWER = 99;
     public NetAlien neighbour;
     public int NUM_GENES = 100;
-    public int POWERWEIGHT = 30;
-    public int RIGHTPOWER = 33;
+    public int POWERWEIGHT = 98;
+    public int RIGHTPOWER = 97;
     public int spaceheight;
     public int spacewidth;
-    public int THRUSTPOWER = 34;
+    public int THRUSTPOWER = 96;
 
     public long fitness() {
         //	System.out.print(age+" "+lowesty+" "+(yippee+1)+" "+shotsFired+"\n");

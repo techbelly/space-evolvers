@@ -15,10 +15,6 @@ class GameSprite {
     protected Image sprite;
     protected Applet parent;
 
-    public boolean isVisible() {
-        return visible;
-    }
-
     public void setVisible(boolean b) {
         visible = b;
     }
@@ -29,11 +25,6 @@ class GameSprite {
 
     public void setActive(boolean b) {
         active = b;
-    }
-
-    public void suspend() {
-        setVisible(false);
-        setActive(false);
     }
 
     public void restore() {
@@ -63,11 +54,6 @@ class GameSprite {
             height = sprite.getHeight(parent);
         }
         restore();
-    }
-
-    public void setSize(int w, int h) {
-        width = w;
-        height = h;
     }
 
     public void update() {

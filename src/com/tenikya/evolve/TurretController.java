@@ -1,25 +1,22 @@
 package com.tenikya.evolve;
 
 import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.*;
 import java.util.Random;
 
 public class TurretController {
 
     private Turret the_turret;
-    private int tur_width;
     private int tur_height;
     private Missile[] the_missile;
     private int nextMissile = 1;
 
-    static int width, height;
+    private int height;
     private int min_x, max_x;
 
-    private int tur_min_x, tur_max_x;
     private int mis_min_x, mis_max_x;
     private int tur_y;
-    AudioClip missilesound;
+    //AudioClip missilesound;
 
     static final int MAX_MISSILES = 200;
     static final int MISS_WIDTH = 3;
@@ -30,35 +27,24 @@ public class TurretController {
     SpaceInvaders game;
 
     public TurretController(GameContext gc, Applet a) {
-        this.width = gc.getWidth();
+        int width = gc.getWidth();
         this.height = gc.getHeight();
         the_turret = new Turret(gc.getTurretImage(), a, this);
         this.randomiser = new Random();
-        tur_width = gc.getTurretImage().getWidth(a) / 2;
+        int tur_width = gc.getTurretImage().getWidth(a) / 2;
         tur_height = gc.getTurretImage().getHeight(a);
 
         tur_y = height - tur_height;
+
         min_x = tur_width;
         max_x = width - tur_width;
-        tur_min_x = 0;
-        tur_max_x = width - tur_width * 2;
+
         mis_min_x = min_x - 2;
         mis_max_x = max_x - 2;
 
         game = (SpaceInvaders) a;
 
         the_turret.setPosition(width / 2 - tur_width, tur_y);
-    }
-
-    public void moveTurret(int x) {
-        /*	if (x<=min_x) {
-                the_turret.setPosition(tur_min_x,tur_y);
-            } else if (x>= max_x) {
-                the_turret.setPosition(tur_max_x,tur_y);
-            } else {
-                the_turret.setPosition(x-tur_width,tur_y);
-            }
-        */
     }
 
     public void fireMissile(int x) {
@@ -81,7 +67,7 @@ public class TurretController {
         }
         int tx = the_turret.getX();
 
-        tx += (int) (TURRET_V * randomiser.nextDouble() - (TURRET_V / 20));
+        tx += (int) (TURRET_V * randomiser.nextDouble());
         if (tx < min_x) {
             tx = min_x;
             TURRET_V = -TURRET_V;
@@ -90,6 +76,7 @@ public class TurretController {
             TURRET_V = -TURRET_V;
         }
         the_turret.setPosition(tx, tur_y);
+
         if (randomiser.nextDouble() > 0.9) {
             fireMissile(tx);
         }
@@ -105,15 +92,6 @@ public class TurretController {
 
     public int getTurretX() {
         return the_turret.getX();
-    }
-
-    public void gunDead() {
-        the_turret.suspend();
-        for (int n = 0; n < MAX_MISSILES; n++) {
-            the_missile[n].suspend();
-        }
-        game.turretDead();
-
     }
 
     public void newGame() {
