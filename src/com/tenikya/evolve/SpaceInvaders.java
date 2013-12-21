@@ -24,14 +24,15 @@ public class SpaceInvaders extends Applet implements Runnable {
     public void init() {
         setBackground(Color.black);
 
-        gc.put("window.width",  new Integer(getBounds().width));
-        gc.put("window.height", new Integer(getBounds().height));
+        gc.setWidth(getBounds().width);
+        gc.setHeight(getBounds().height);
 
         showStatus("Loading Media...hold your horses!!");
         loadMedia(gc);
-        ac = new AlienController(gc);
-        tc = new TurretController(gc);
-
+        tc = new TurretController(gc, this);
+        ac = new AlienController(gc, this, tc);
+        tc.loadMissiles(ac.getAliens());
+        ac.loadMissiles(tc.getTurret());
         image = createImage(getBounds().width, getBounds().height);
         offscreen = image.getGraphics();
         newGame();
@@ -42,22 +43,23 @@ public class SpaceInvaders extends Applet implements Runnable {
         java.net.URL documentroot = getDocumentBase();
         Image turretImage = getImage(documentroot, "../media/turret.gif");
         t.addImage(turretImage, 0);
-        gc.put("images.turret",turretImage);
+        gc.setTurretImage(turretImage);
         Image alienImage = getImage(documentroot, "../media/alien.gif");
         t.addImage(alienImage, 0);
-        gc.put("images.alien",alienImage);
+        gc.setAlienImage(alienImage);
         Image explodeImage = getImage(documentroot, "../media/explode.gif");
         t.addImage(explodeImage, 0);
-        gc.put("images.explode",explodeImage);
+        gc.setExplodeImage(explodeImage);
         AudioClip alienfire = getAudioClip(documentroot, "../media/alienfire.au");
-        gc.put("sounds.alienfire", alienfire);
+        gc.setAlienfire(alienfire);
         AudioClip missilesound = getAudioClip(documentroot, "../media/fire.au");
-        gc.put("sounds.turretfire", alienfire);
+        gc.setMissilefire(missilesound);
         AudioClip hitsound = getAudioClip(documentroot, "../media/hit.au");
-        gc.put("sounds.hit", hitsound);
+        gc.setHitsound(hitsound);
         try {
             t.waitForAll();
         } catch (InterruptedException e) {
+           showStatus("Error Loading Media!!");
         }
         if (t.isErrorAny()) {
             showStatus("Error Loading Media!!");
@@ -111,7 +113,7 @@ public class SpaceInvaders extends Applet implements Runnable {
 
     public void paint(Graphics g) {
         offscreen.setColor(Color.black);
-        offscreen.fillRect(0, 0, width, height);
+        offscreen.fillRect(0, 0, getBounds().width, getBounds().height);
 
         if (gameInProgress) {
             tc.paint(offscreen);

@@ -29,14 +29,13 @@ public class TurretController {
 
     SpaceInvaders game;
 
-    public TurretController(int width, int height, Image turImage, Intersect
-            target[], Applet a) {
-        this.width = width;
-        this.height = height;
-        the_turret = new Turret(turImage, a, this);
+    public TurretController(GameContext gc, Applet a) {
+        this.width = gc.getWidth();
+        this.height = gc.getHeight();
+        the_turret = new Turret(gc.getTurretImage(), a, this);
         this.randomiser = new Random();
-        tur_width = turImage.getWidth(a) / 2;
-        tur_height = turImage.getHeight(a);
+        tur_width = gc.getTurretImage().getWidth(a) / 2;
+        tur_height = gc.getTurretImage().getHeight(a);
 
         tur_y = height - tur_height;
         min_x = tur_width;
@@ -49,13 +48,6 @@ public class TurretController {
         game = (SpaceInvaders) a;
 
         the_turret.setPosition(width / 2 - tur_width, tur_y);
-
-        the_missile = new Missile[MAX_MISSILES];
-        for (int n = 0; n < MAX_MISSILES; n++) {
-            the_missile[n] = new Missile(MISS_WIDTH, MISS_HEIGHT, MISS_COLOUR,
-                    MISS_SPEED, height - tur_height,
-                    0, target);
-        }
     }
 
     public void moveTurret(int x) {
@@ -111,21 +103,8 @@ public class TurretController {
 
     }
 
-    public Turret getTurret() {
-        return the_turret;
-
-    }
-
-    public int getTurretY() {
-        return tur_y;
-    }
-
     public int getTurretX() {
         return the_turret.getX();
-    }
-
-    public int getLives() {
-        return the_turret.getLives();
     }
 
     public void gunDead() {
@@ -145,4 +124,17 @@ public class TurretController {
 
     public java.util.Random randomiser;
     public int TURRET_V = 12;
+
+    public void loadMissiles(Intersect[] aliens) {
+        the_missile = new Missile[MAX_MISSILES];
+                for (int n = 0; n < MAX_MISSILES; n++) {
+                    the_missile[n] = new Missile(MISS_WIDTH, MISS_HEIGHT, MISS_COLOUR,
+                            MISS_SPEED, height - tur_height,
+                            0, aliens);
+                }
+    }
+
+    public Intersect getTurret() {
+        return this.the_turret;
+    }
 }

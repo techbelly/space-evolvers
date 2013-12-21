@@ -34,8 +34,7 @@ class GeneticCode extends Object {
     public int GetGene(int gene) {
         int site = ((gene - 1) * geneLength) % 16;
         int geneIndex = ((gene - 1) * geneLength) / 16;
-        int contents = (int) (genes[geneIndex] & (mask << site)) >>> site;
-        return contents;
+        return (int) (genes[geneIndex] & (mask << site)) >>> site;
     }
 
     public void SetGene(int gene, int value) {

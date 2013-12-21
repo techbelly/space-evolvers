@@ -1,5 +1,6 @@
 package com.tenikya.evolve;
 
+import java.applet.Applet;
 import java.awt.*;
 
 class NetAlien extends GameSprite implements Intersect, Moveable {
@@ -7,7 +8,6 @@ class NetAlien extends GameSprite implements Intersect, Moveable {
     protected Image explodeImage;
     boolean hit;
     int hitcount, count;
-    SpaceInvaders controller;
     AlienController aliencontrol;
     public FloatGenes myGenes;
     public Brain myBrain;
@@ -23,12 +23,10 @@ class NetAlien extends GameSprite implements Intersect, Moveable {
     static public double yippeew = 6000;
     static public int maxAge = 1200;
 
-    public NetAlien(Image i, Image e, int x, int y, int vx, int vy,
-                    SpaceInvaders a, AlienController b) {
+    public NetAlien(Image i, Image e, int x, int y, int vx, int vy, Applet a, AlienController b) {
         super(x, y, i, a);
         this.vx = vx;
         this.vy = vy;
-        controller = (SpaceInvaders) a;
         aliencontrol = b;
         explodeImage = e;
         this.spaceheight = b.height;

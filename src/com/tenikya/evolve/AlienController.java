@@ -1,5 +1,6 @@
 package com.tenikya.evolve;
 
+import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.*;
 
@@ -18,23 +19,23 @@ public class AlienController {
     Intersect target[];
     AudioClip missilesound;
 
-
     static final int MAX_MISSILES = 100;
     static final int MISS_WIDTH = 3;
     static final int MISS_HEIGHT = 5;
     static final int MISS_SPEED = 0;
     static final Color MISS_COLOUR = Color.green;
     static final double AGGRESSION = 0.97;
+    private TurretController turretController;
 
 
-    public AlienController(GameContext gc) {
+    public AlienController(GameContext gc, Applet a, TurretController t) {
 
-        this.width = ((Integer) gc.get("window.width")).intValue();
-        this.height = ((Integer) gc.get("window.height")).intValue();
-        this.sprite = (Image) gc.get("images.alien");
-        this.explode = (Image) gc.get("images.explode");
-        this.missilesound = (AudioClip) gc.get("sounds.alienFire");
-
+        this.width = gc.getWidth();
+        this.height = gc.getHeight();
+        this.sprite = gc.getAlienImage();
+        this.explode = gc.getExplodeImage();
+        this.missilesound = gc.getAlienfire();
+        this.turretController = t;
         aliens = new NetAlien[NUM_ALIENS];
         for (int n = 0; n < aliens.length; n++) {
             aliens[n] = new NetAlien(sprite, explode, 0, 0, 10, 0, a, this);
@@ -44,11 +45,9 @@ public class AlienController {
         aliens[0].setNeighbour(aliens[aliens.length - 1]);
         target = new Intersect[1];
         the_missile = new Missile[MAX_MISSILES];
-
-
     }
 
-    public void doInit(Intersect t) {
+    public void loadMissiles(Intersect t) {
 
         target[0] = t;
 
@@ -116,7 +115,7 @@ public class AlienController {
     }
 
     public int getTurretX() {
-        return parent.tc.getTurretX();
+        return this.turretController.getTurretX();
     }
 
 
@@ -132,13 +131,9 @@ public class AlienController {
             }
 
         }
-        // System.out.print("*****************\n");
         goner.myGenes.MutateFrom(aliens[fittestAlien].myGenes);
         goner.resetParams();
         initPosition(goner, 2);
-    }
-
-    public void setDialogParams() {
     }
 
 
